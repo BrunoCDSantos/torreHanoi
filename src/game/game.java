@@ -18,7 +18,7 @@ public class game {
     private int saida;
     private int destino;
     private final static int MIN = 31;
-    private final Scanner br;
+    private Scanner br;
 
     public game(boolean rez) throws Exception {
         if (rez) {
@@ -60,10 +60,14 @@ public class game {
             case 3:
                 break;
             default:
-                br.close();
-                System.exit(0);
+                this.fimJogo();
                 break;
         }
+    }
+
+    private void fimJogo() {
+        br.close();
+        System.exit(0);
     }
 
     private void moviPecaEntra(int valor) throws Exception {
@@ -76,16 +80,22 @@ public class game {
                 || this.destino > 3
                 || this.destino == this.saida);
         if (valor > this.valorPeca(this.destino)) {
-            System.out.println("!!!!!!!!!!!!!!!!!ALERTA!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.out.println("Peça maior em cima da menor, movimeto impossivel");
+            System.out.println("\n!!!!!!!!!!!!!!!!!ALERTA!!!!!!!!!!!!!!!!!");
+            System.out.println("Peça maior em cima da menor, movimeto impossivel\n");
         } else {
             this.retiraPeca(this.saida);
             this.colocaPeca(this.destino, valor);
-            System.out.println("**************SUCESSO***************************");
-            System.out.println("Peça movida com sucesso");
             this.jogadas++;
+            System.out.println("\n*****************SUCESSO*****************");
+            System.out.println("Peça movida com sucesso, jogadas realizadas: " 
+                    + this.jogadas + "\n");
+            
         }
-        this.start();
+        if (this.jogadas >= MIN) {
+            this.vencedor();
+        } 
+            this.start();
+        
 
     }
 
@@ -193,8 +203,8 @@ public class game {
 
         return valorPe;
     }
-    
-    private void colocaPeca(int pino,int valor) throws Exception{
+
+    private void colocaPeca(int pino, int valor) throws Exception {
         switch (pino) {
             case 1:
                 this.pinoEsquerdo.push(valor);
@@ -205,6 +215,34 @@ public class game {
             default:
                 this.pinoDireito.push(valor);
                 break;
+        }
+    }
+
+    private void vencedor() throws Exception {
+        String novoJogo;
+
+        if (this.pinoDireito.cheia()) {
+            System.out.println("*****************VENCEDOR*****************");
+            br.reset();
+            if (this.jogadas > MIN) {
+                System.out.println("É... mas poderia ter feito melhor tipo em 31 jogadas");
+            } else {
+                System.out.println("Perfeito você é um gênio!!!");
+            }
+
+            do {
+                System.out.println("Você quer tentar de novo???? \n"
+                        + "S - Sim\n"
+                        + "N - Não;");
+                novoJogo = br.nextLine();
+            } while (!novoJogo.equals("S") && !novoJogo.equals("N"));
+
+            if (novoJogo.equals("S")) {
+                this.start();
+            } else {
+                this.fimJogo();
+            }
+
         }
     }
 }

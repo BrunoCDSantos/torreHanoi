@@ -8,7 +8,7 @@ import interfac.Ipilha;
  */
 public class pilha implements Ipilha{
 
-    public int n;
+    protected int n;
 
     //throw new UnsupportedOperationException("Not supported yet.");
     public pilha() {
@@ -34,7 +34,7 @@ public class pilha implements Ipilha{
         return this.n == 0;
     }
     
-    protected boolean cheia(){
+    public boolean cheia(){
         return this.n == 5;
     }
 
