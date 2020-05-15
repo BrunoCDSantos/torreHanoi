@@ -5,14 +5,13 @@ package estruPilha;
  * @author bruno
  */
 public class pilhaCon extends pilha {
-
-    private final int tam;
+    
     private final int vet[];
 
     public pilhaCon() {
         super();
         this.vet = new int[5];
-        this.tam = 5;
+        
     }
 
     @Override

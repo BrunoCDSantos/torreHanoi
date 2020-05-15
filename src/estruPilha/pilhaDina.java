@@ -12,15 +12,15 @@ package estruPilha;
 public class pilhaDina extends pilha {
 
     private peca fim, ini;
-    private int size;
+    
 
-    public void pilhaDina() {
+    public pilhaDina() {
+        super();
         this.fim = null;
         this.ini = null;
-        this.size = 0;
     }
 
-    @Override
+   
     public void push(int v) throws Exception {
         peca objetoAdd = new peca(null, v);
         if (this.vazia()) {
@@ -31,9 +31,9 @@ public class pilhaDina extends pilha {
             this.fim.setProx(objetoAdd);
             this.fim = objetoAdd;
         }
-        size++;
+        this.n++;
     }
-
+    
     @Override
     public int pop() throws Exception {
         int valorObj = fim.getInfo();
@@ -42,14 +42,14 @@ public class pilhaDina extends pilha {
         if (this.vazia()) {
             System.out.println("Lista vazia");
         } else {
-            if (this.size != 1) {
+            if (this.n != 1) {
                 while (eleGener.getProx().getProx() != null) {
                     eleGener = eleGener.getProx();
                 }
                 eleGener.setProx(null);
                 this.fim.setProx(eleGener);
                 this.fim = eleGener;
-                this.size--;
+                this.n--;
             } else {
                 this.libera();
             }
@@ -63,20 +63,26 @@ public class pilhaDina extends pilha {
         return this.fim.getInfo();
     }
 
-    protected void libera() throws Exception {
+    @Override
+    public void libera(){
         this.fim = null;
         this.ini = null;
-        this.size = 0;
+        this.n = 0;
     }
 
     public String toString() {
-        String eleLista = "";
+        String vetor = "";
         peca eleGener = this.ini;
-        while (eleGener != null) {
-            eleLista = eleLista + "/" + eleGener.getInfo();
-            eleGener = eleGener.getProx();
+        for (int i = 0; i < 5; i++) {
+            if (eleGener != null) {
+                vetor = vetor + " " + eleGener.getInfo();
+                eleGener = eleGener.getProx();
+            } else {
+                vetor = vetor + " | ";
+            }
+
         }
-        return eleLista;
+        return vetor;
     }
 
 }

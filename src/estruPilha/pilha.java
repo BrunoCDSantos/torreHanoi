@@ -21,12 +21,13 @@ public class pilha implements Ipilha{
     
     @Override
     public int pop() throws Exception {
-        return 0;
+        
+        return n;
     }
 
     @Override
     public int top() throws Exception {
-        return 0;
+        return n;
     }
 
     @Override
@@ -36,6 +37,11 @@ public class pilha implements Ipilha{
     
     public boolean cheia(){
         return this.n == 5;
+    }
+
+    @Override
+    public void libera() {
+        this.n = 0;
     }
 
 

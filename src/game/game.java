@@ -11,58 +11,74 @@ import java.util.Scanner;
  */
 public class game {
 
-    private final pilha pinoEsquerdo;
-    private final pilha pinoMeio;
-    private final pilha pinoDireito;
+    private pilha pinoEsquerdo;
+    private pilha pinoMeio;
+    private pilha pinoDireito;
     private int jogadas;
     private int saida;
     private int destino;
     private final static int MIN = 31;
-    private Scanner br;
+    private  Scanner br;
+    private final boolean tipPilha;
+    private boolean permVoltJogada;
 
     public game(boolean rez) throws Exception {
-        if (rez) {
-            this.pinoEsquerdo = new pilhaCon();
-            this.pinoMeio = new pilhaCon();
-            this.pinoDireito = new pilhaCon();
-        } else {
-            this.pinoEsquerdo = new pilhaDina();
-            this.pinoMeio = new pilhaDina();
-            this.pinoDireito = new pilhaDina();
-        }
+        this.tipPilha = rez;
         this.restart();
-        this.jogadas = 0;
-        this.saida = 0;
-        this.destino = 0;
         br = new Scanner(System.in);
     }
 
     public void start() throws Exception {
         byte op;
         this.mostraJogo();
-        do {
-            System.out.println("Escolha sua jogada:\n"
-                    + "1- Movimentar peça;\n"
-                    + "2- Voltar uma jogada;\n"
-                    + "3- Reiniciar\n"
-                    + "4- Sair;");
+        try {
+            do {
+                System.out.println("Escolha sua jogada:\n"
+                        + "1- Movimentar peça;\n"
+                        + "2- Voltar uma jogada;\n"
+                        + "3- Reiniciar\n"
+                        + "4- Sair;");
 
-            op = br.nextByte();
-        } while (op < 1 || op > 4);
+                op = br.nextByte();
+            } while (op < 1 || op > 4);
 
-        switch (op) {
-            case 1:
-                int valorSaida = this.moviPecaSaida();
-                this.moviPecaEntra(valorSaida);
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            default:
-                this.fimJogo();
-                break;
+            switch (op) {
+                case 1:
+                    int valorSaida = this.moviPecaSaida();
+                    this.moviPecaEntra(valorSaida);
+                    break;
+                case 2:
+                    this.voltaJogada();
+                    break;
+                case 3:
+                    System.out.println("\n Você retornara para o começo da sua jornada!!!");
+                    this.restart();
+                    this.start();
+                    break;
+                default:
+                    this.fimJogo();
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("\nEita!!! tem que colocar as opção acima e não escrever");
+            br = new Scanner(System.in);
+            this.start();
         }
+    }
+
+    private void voltaJogada() throws Exception {
+        if (this.permVoltJogada) {
+            System.out.println("\nVoltando uma jogada!!! ");
+            this.jogadas--;
+            int valor = this.valorPeca(this.destino);
+            this.permVoltJogada = false;
+
+            this.retiraPeca(this.destino);
+            this.colocaPeca(this.saida, valor);
+        } else {
+            System.out.println("\n Você ja voltou uma jogada");
+        }
+        this.start();
     }
 
     private void fimJogo() {
@@ -73,7 +89,7 @@ public class game {
     private void moviPecaEntra(int valor) throws Exception {
         String pinoDispo = this.retornaPinoDispo();
         do {
-            System.out.println("Você deseja colocar em qual pino: \n"
+            System.out.print("Você deseja colocar em qual pino: \n"
                     + pinoDispo);
             this.destino = br.nextByte();
         } while (this.destino < 1
@@ -86,16 +102,16 @@ public class game {
             this.retiraPeca(this.saida);
             this.colocaPeca(this.destino, valor);
             this.jogadas++;
+            this.permVoltJogada = true;
             System.out.println("\n*****************SUCESSO*****************");
-            System.out.println("Peça movida com sucesso, jogadas realizadas: " 
+            System.out.println("Peça movida com sucesso, jogadas realizadas: "
                     + this.jogadas + "\n");
-            
+
         }
         if (this.jogadas >= MIN) {
             this.vencedor();
-        } 
-            this.start();
-        
+        }
+        this.start();
 
     }
 
@@ -154,9 +170,23 @@ public class game {
     }
 
     private void restart() throws Exception {
+        if (this.tipPilha) {
+            this.pinoEsquerdo = new pilhaCon();
+            this.pinoMeio = new pilhaCon();
+            this.pinoDireito = new pilhaCon();
+        } else {
+            this.pinoEsquerdo = new pilhaDina();
+            this.pinoMeio = new pilhaDina();
+            this.pinoDireito = new pilhaDina();
+        }
+        this.permVoltJogada = false;
+        this.jogadas = 0;
+        this.saida = 0;
+        this.destino = 0;
         for (int i = 5; i > 0; i--) {
             this.pinoEsquerdo.push(i);
         }
+
     }
 
     private void mostraJogo() {
@@ -164,7 +194,7 @@ public class game {
         String pinoMeio = this.pinoMeio.toString();
         String pinoDireito = this.pinoDireito.toString();
 
-        System.out.println("Pino esquerdo " + pinoEsquerdo + " \n"
+        System.out.println("\nPino esquerdo " + pinoEsquerdo + " \n"
                 + "Pino meio     " + pinoMeio + " \n"
                 + "Pino direito  " + pinoDireito + " \n");
     }
@@ -222,7 +252,7 @@ public class game {
         String novoJogo;
 
         if (this.pinoDireito.cheia()) {
-            System.out.println("*****************VENCEDOR*****************");
+            System.out.println("\n*****************VENCEDOR*****************");
             br.reset();
             if (this.jogadas > MIN) {
                 System.out.println("É... mas poderia ter feito melhor tipo em 31 jogadas");
@@ -231,10 +261,10 @@ public class game {
             }
 
             do {
-                System.out.println("Você quer tentar de novo???? \n"
+                System.out.println("\nVocê quer tentar de novo???? \n"
                         + "S - Sim\n"
                         + "N - Não;");
-                novoJogo = br.nextLine();
+                novoJogo = br.next();
             } while (!novoJogo.equals("S") && !novoJogo.equals("N"));
 
             if (novoJogo.equals("S")) {
