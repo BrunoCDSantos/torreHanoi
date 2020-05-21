@@ -5,14 +5,16 @@
  */
 package estruPilha;
 
+import interfac.Ipilha;
+
 /**
  *
  * @author bruno
  */
-public class pilhaDina extends pilha {
+public class pilhaDina <G> implements Ipilha <G> {
 
     private peca fim, ini;
-    
+    protected int n;
 
     public pilhaDina() {
         super();
@@ -20,8 +22,7 @@ public class pilhaDina extends pilha {
         this.ini = null;
     }
 
-   
-    public void push(int v) throws Exception {
+    public void push(G v) throws Exception {
         peca objetoAdd = new peca(null, v);
         if (this.vazia()) {
             this.ini = objetoAdd;
@@ -33,10 +34,10 @@ public class pilhaDina extends pilha {
         }
         this.n++;
     }
-    
+
     @Override
-    public int pop() throws Exception {
-        int valorObj = fim.getInfo();
+    public G pop() throws Exception {
+        G valorObj = (G)fim.getInfo();
         peca eleGener = this.ini;
 
         if (this.vazia()) {
@@ -59,12 +60,12 @@ public class pilhaDina extends pilha {
     }
 
     @Override
-    public int top() throws Exception {
-        return this.fim.getInfo();
+    public G top() throws Exception {
+        return (G)this.fim.getInfo();
     }
 
     @Override
-    public void libera(){
+    public void libera() {
         this.fim = null;
         this.ini = null;
         this.n = 0;
@@ -85,4 +86,13 @@ public class pilhaDina extends pilha {
         return vetor;
     }
 
+    @Override
+    public boolean vazia() throws Exception {
+        return this.n == 0;
+    }
+
+    @Override
+    public boolean cheia() {
+        return this.n == 5;
+    }
 }

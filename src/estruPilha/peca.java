@@ -9,12 +9,12 @@ package estruPilha;
  *
  * @author bruno
  */
-public class peca {
+public class peca <G>{
 
-    private int info;
+    private G info;
     private peca prox;
 
-    public peca(peca prox, int info) {
+    public peca(peca prox, G info) {
         this.prox = prox;
         this.info = info;
     }
@@ -27,11 +27,11 @@ public class peca {
         this.prox = prox;
     }
 
-    int getInfo() {
+    G getInfo() {
         return info;
     }
 
-    void setInfo(int info) {
+    void setInfo(G info) {
         this.info = info;
     }
 }

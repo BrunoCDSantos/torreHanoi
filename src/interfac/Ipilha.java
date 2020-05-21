@@ -1,14 +1,16 @@
 package interfac;
 
-public interface Ipilha {
+public interface Ipilha <G>{
 
-    public void push(int v) throws Exception;
+    public void push(G v) throws Exception;
 
-    public int pop() throws Exception;
+    public G pop() throws Exception;
 
-    public int top() throws Exception;
+    public G top() throws Exception;
 
     public boolean vazia() throws Exception;
     
     public void libera();
+    
+    public boolean cheia();
 }

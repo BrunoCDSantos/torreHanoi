@@ -1,8 +1,8 @@
 package game;
 
-import estruPilha.pilha;
 import estruPilha.pilhaCon;
 import estruPilha.pilhaDina;
+import interfac.Ipilha;
 import java.util.Scanner;
 
 /**
@@ -11,9 +11,9 @@ import java.util.Scanner;
  */
 public class game {
 
-    private pilha pinoEsquerdo;
-    private pilha pinoMeio;
-    private pilha pinoDireito;
+    private Ipilha pinoEsquerdo;
+    private Ipilha pinoMeio;
+    private Ipilha pinoDireito;
     private int jogadas;
     private int saida;
     private int destino;
@@ -161,7 +161,7 @@ public class game {
         return valorPeca;
     }
 
-    private boolean pecaMov(pilha mov) throws Exception {
+    private boolean pecaMov(Ipilha mov) throws Exception {
         if (mov.vazia()) {
             System.out.println("Não foi possivel retirar");
             return false;
@@ -171,10 +171,12 @@ public class game {
 
     private void restart() throws Exception {
         if (this.tipPilha) {
+            System.out.println("Pilha Continua");
             this.pinoEsquerdo = new pilhaCon();
             this.pinoMeio = new pilhaCon();
             this.pinoDireito = new pilhaCon();
         } else {
+            System.out.println("Pilha Dinamica");
             this.pinoEsquerdo = new pilhaDina();
             this.pinoMeio = new pilhaDina();
             this.pinoDireito = new pilhaDina();
@@ -218,13 +220,13 @@ public class game {
         try {
             switch (peca) {
                 case 1:
-                    valorPe = this.pinoEsquerdo.top();
+                    valorPe = (int)this.pinoEsquerdo.top();
                     break;
                 case 2:
-                    valorPe = this.pinoMeio.top();
+                    valorPe = (int)this.pinoMeio.top();
                     break;
                 default:
-                    valorPe = this.pinoDireito.top();
+                    valorPe = (int)this.pinoDireito.top();
                     break;
             }
         } catch (Exception e) {
