@@ -8,6 +8,7 @@ Aplicação baseado no jogo Torre de Hanói utilizando os conhecimentos de estru
  - verifique se você tem o java instalado em sua máquina utilizando o camando `java -version`  o java tem que ser o 8 para cima.
  - baixe o torreHanoi.jar.
  - abra o cmd ou powerShell.
+ - navegue até a pasta que possua o jogo com o comando `cd`.
  - execute uns dos comando abaixo.
 
 ## Para executar da forma com array 
